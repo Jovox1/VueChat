@@ -1,26 +1,48 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="messagers">
+    <div class="messagers__window">
+      <WindowHeader :src="'alex'" :name="'Александр'" :status="'Онлайн'" />
+      <WindowBody :sendId="2" :message="message" />
+      <WindowFooter :sendId="2" @new-mess="newMess" />
+    </div>
+    <div class="messagers__window">
+      <WindowHeader :src="'jane'" :name="'Евгений'" :status="'Онлайн'" />
+      <WindowBody :sendId="1" :message="message" />
+      <WindowFooter :sendId="1" @new-mess="newMess" />
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import WindowBody from "./components/WindowBody.vue";
+import WindowFooter from "./components/WindowFooter.vue";
+import WindowHeader from "./components/WindowHeader.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    WindowHeader,
+    WindowBody,
+    WindowFooter,
+  },
+  data() {
+    return {
+      message: [],
+    };
+  },
+  created() {
+    const messStorage = localStorage.message
+      ? JSON.parse(localStorage.message)
+      : [];
+    this.message = messStorage;
+  },
+  methods: {
+    newMess(mess) {
+      this.message.push(mess);
+      localStorage.message = JSON.stringify(this.message);
+    },
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
